@@ -163,56 +163,19 @@ namespace EPuzzleConsole
              */
             if (status == CpSolverStatus.Optimal || status == CpSolverStatus.Feasible)
             {
-                // Print the complete solution
-                Console.WriteLine("Solution (houses are numbered left-to-right):\n");
-                for (int houseNumber = 1; houseNumber <= numberOfHouses; houseNumber++)
-                {
-                    Console.WriteLine($"House {houseNumber} Color: {Helper.GetModelVarNameForMatchingValue(houseNumber, colors, solver)}");
-                    Console.Write($"Nationality: {Helper.GetModelVarNameForMatchingValue(houseNumber, nationalities, solver)}, ");
-                    Console.Write($"Pet: {Helper.GetModelVarNameForMatchingValue(houseNumber, pets, solver)}, ");
-                    Console.Write($"Drinks: {Helper.GetModelVarNameForMatchingValue(houseNumber, drinks, solver)}, ");
-                    Console.Write($"Smokes: {Helper.GetModelVarNameForMatchingValue(houseNumber, smokes, solver)}\n\n");
-                }
+                Solution solution = SolutionMapper.ToSolution(solver, colors, nationalities, pets, drinks, smokes);
+                solution.Print();
 
                 // Extract answers for the two specific questions posed by the puzzle
-                int waterHouseNumber = (int)solver.Value(water);
-                string waterHouseOwner = Helper.GetModelVarNameForMatchingValue(waterHouseNumber, nationalities, solver);
-                int zebraHouseNumber = (int)solver.Value(zebra);
-                string zebraHouseOwner = Helper.GetModelVarNameForMatchingValue(zebraHouseNumber, nationalities, solver);
-                Console.WriteLine($"Who drinks water? House {waterHouseNumber} - the {waterHouseOwner}");
-                Console.WriteLine($"Who owns the zebra? House {zebraHouseNumber} - the {zebraHouseOwner}");
+                House? drinks_water = solution.GetHouseByAttribute("drinks","water");
+                House? owns_zebra = solution.GetHouseByAttribute("pet","zebra");
+                Console.WriteLine($"Who drinks water? House {drinks_water?.Id} - the {drinks_water?.Nationality}");
+                Console.WriteLine($"Who owns the zebra? House {owns_zebra?.Id} - the {owns_zebra?.Nationality}");
             }
             else
             {
                 Console.WriteLine("No solution found.");
             }
-        }
-    }
-
-    static class Helper
-    {
-        static internal string GetModelVarNameForMatchingValue(int searchVal, IEnumerable<IntVar> modelIntVars, CpSolver solver)
-        {
-            /* Reverse-lookup in a solution: 
-             * Given an int search value, a list of CpModel variables 
-             * where at most one of those variables could have been
-             * assigned that value, and a solver's solution,
-             * find the one variable out of the list that got assigned 
-             * this value by the solver.
-             * If one is found, return the name of that variable.
-             * Otherwise, return "UNKNOWN".
-             * Note that since we assume uniqueness, this method can 
-             * return once a single match is found.
-             */
-            foreach (IntVar modelIntVar in modelIntVars)
-            {
-                if (solver.Value(modelIntVar) == searchVal)
-                {
-                    return modelIntVar.Name();
-                }
-            }
-            // No variable in the list was found to have the value.
-            return "UNKNOWN";
         }
     }
 }
