@@ -163,7 +163,7 @@ namespace EPuzzleConsole
              */
             if (status == CpSolverStatus.Optimal || status == CpSolverStatus.Feasible)
             {
-                Solution solution = SolutionMapper.ToSolution(solver, colors, nationalities, pets, drinks, smokes);
+                ZebraSolution solution = ZebraSolutionMapper.ToSolution(solver, colors, nationalities, pets, drinks, smokes);
                 solution.Print();
 
                 // Extract answers for the two specific questions posed by the puzzle

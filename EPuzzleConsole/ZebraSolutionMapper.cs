@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 
 namespace EPuzzleConsole
 {
-    internal class SolutionMapper
+    internal class ZebraSolutionMapper
     {
-        public static Solution ToSolution(
+        public static ZebraSolution ToSolution(
             CpSolver solver, 
             ImmutableArray<IntVar> colors, 
             ImmutableArray<IntVar> nationalities,
@@ -13,7 +13,7 @@ namespace EPuzzleConsole
             ImmutableArray<IntVar> drinks,
             ImmutableArray<IntVar> smokes)
         {
-            Solution solution = new Solution();
+            ZebraSolution solution = new ZebraSolution();
             ImmutableArray<IntVar> allVars = colors.AddRange(nationalities).AddRange(pets).AddRange(drinks).AddRange(smokes);
 
             foreach (IntVar modelIntVar in allVars)

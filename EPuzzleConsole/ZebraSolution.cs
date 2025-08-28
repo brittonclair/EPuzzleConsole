@@ -2,10 +2,10 @@
 
 namespace EPuzzleConsole
 {
-    internal class Solution
+    internal class ZebraSolution
     {
         public Dictionary<int, House> Houses { get; private set; } = [];
-        public Solution()
+        public ZebraSolution()
         {
             for (int i = 1; i <= 5; i++)
             {
