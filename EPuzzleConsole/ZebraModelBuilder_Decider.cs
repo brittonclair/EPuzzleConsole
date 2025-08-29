@@ -26,8 +26,6 @@ namespace EPuzzleConsole
             // establish that house number here.
             int middleHouse = 3;
 
-            var c3 = new VariableInteger("c3", 0, 1);
-
             // Step 1: CREATE MODEL VARIABLES
             int lowerBound = 1;
             int upperBound = numberOfHouses;
