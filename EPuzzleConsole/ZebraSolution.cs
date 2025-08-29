@@ -68,8 +68,12 @@ namespace EPuzzleConsole
             return null;
         }
 
-        public void Print()
+        public void Print(string heading = "")
         {
+            Console.WriteLine();
+            Console.WriteLine(new string('-', 40));
+            Console.WriteLine(heading);
+            Console.WriteLine(new string('-', 40));
             Console.WriteLine(this.ToString());
         }
 

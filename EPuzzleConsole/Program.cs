@@ -1,3 +1,3 @@
 ﻿using EPuzzleConsole;
-Zebra zebra = new();
-zebra.Solve();
+Zebra.SolveUsingCpSolver();
+Zebra.SolveUsingDecider();
