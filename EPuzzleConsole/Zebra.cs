@@ -74,6 +74,12 @@ namespace EPuzzleConsole
             {
                 ZebraSolution solution = ZebraSolutionMapper.ToSolutionFromZ3(s);
                 solution.Print("Solution from Z3");
+
+                // Extract answers for the two specific questions posed by the puzzle
+                House? drinks_water = solution.GetHouseByAttribute("drinks", "water");
+                House? owns_zebra = solution.GetHouseByAttribute("pet", "zebra");
+                Console.WriteLine($"Who drinks water? House {drinks_water?.Id} - the {drinks_water?.Nationality}");
+                Console.WriteLine($"Who owns the zebra? House {owns_zebra?.Id} - the {owns_zebra?.Nationality}");
             }
             else
             {
