@@ -5,10 +5,12 @@ Using constraint solvers to solve the Zebra Puzzle (sometimes called Einstein's 
 ## Solvers used:
 * [Google OR-Tools](https://developers.google.com/optimization): CP-SAT for .Net
 * [Decider](https://github.com/lifebeyondfife/Decider): open source .Net Constraint Programming Solver
+* [Microsoft Z3](https://github.com/z3prover/z3?tab=readme-ov-file#z3-bindings): satisfiability modulo theories solver from Microsoft Research
 
 ## Requirements:
 * .Net 9
-* Google.OrTools .Net wrapper nuget package
+* Google.OrTools for .Net wrapper nuget package
 * Decider nuget package
+* Microsoft.Z3 for .Net nuget package
 
  
