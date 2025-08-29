@@ -4,7 +4,7 @@ Using constraint solvers to solve the Zebra Puzzle (sometimes called Einstein's 
 
 ## Solvers used:
 * Google OR-Tools CP-SAT for .Net
-* Decider: open source .Net Constraint Programming Solver
+* [Decider](https://github.com/lifebeyondfife/Decider): open source .Net Constraint Programming Solver
 
 ## Requirements:
 * .Net 9
