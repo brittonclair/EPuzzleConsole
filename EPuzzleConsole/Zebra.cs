@@ -1,5 +1,6 @@
 ﻿using Decider.Csp.Integer;
 using Google.OrTools.Sat;
+using Microsoft.Z3;
 using System.Collections.Immutable;
 
 namespace EPuzzleConsole
@@ -8,7 +9,7 @@ namespace EPuzzleConsole
     {
         public static void SolveUsingCpSolver()
         {
-            (CpModel model, ImmutableArray<IntVar> variablesOfInterest) = ZebraModelBuilder_CpModel.BuildModel();
+            (CpModel model, ImmutableArray<Google.OrTools.Sat.IntVar> variablesOfInterest) = ZebraModelBuilder_CpModel.BuildModel();
             
             CpSolver solver = new();
             var status = solver.Solve(model);
@@ -59,6 +60,24 @@ namespace EPuzzleConsole
                 Console.WriteLine($"Who drinks water? House {drinks_water?.Id} - the {drinks_water?.Nationality}");
                 Console.WriteLine($"Who owns the zebra? House {owns_zebra?.Id} - the {owns_zebra?.Nationality}");
 
+            }
+        }
+
+        public static void SolveUsingZ3()
+        {
+            Microsoft.Z3.Solver s = ZebraModelBuilder_Z3.BuildModel();
+            var z3Result = s.Check();
+            Console.WriteLine();
+            Console.WriteLine(new string('=', 40));
+            Console.WriteLine($"Z3 Check: {z3Result}");
+            if(z3Result == Status.SATISFIABLE)
+            {
+                ZebraSolution solution = ZebraSolutionMapper.ToSolutionFromZ3(s);
+                solution.Print("Solution from Z3");
+            }
+            else
+            {
+                Console.WriteLine("No solution found.");
             }
         }
     }

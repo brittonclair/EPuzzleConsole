@@ -1,5 +1,6 @@
 ﻿using Decider.Csp.BaseTypes;
 using Google.OrTools.Sat;
+using Microsoft.Z3;
 using System.Collections.Immutable;
 
 namespace EPuzzleConsole
@@ -100,6 +101,56 @@ namespace EPuzzleConsole
                         break;
                     default:
                         throw new ArgumentException($"Unexpected variable name: {modelIntVar.Name()}");
+                }
+            }
+            return solution;
+        }
+
+        internal static ZebraSolution ToSolutionFromZ3(Solver s)
+        {
+            ZebraSolution solution = new();
+            IEnumerable<KeyValuePair<FuncDecl, Expr>> cs = s.Model.Consts;
+            foreach (var c in cs)
+            {
+                //Console.WriteLine($"{c.Key.Name} = {c.Value}");
+                int value = ((IntNum)c.Value).Int;
+                switch (c.Key.Name.ToString())
+                {
+                    case "blue":
+                    case "green":
+                    case "ivory":
+                    case "red":
+                    case "yellow":
+                        solution.Houses[value].Color = c.Key.Name.ToString();
+                        break;
+                    case "dog":
+                    case "fox":
+                    case "horse":
+                    case "snails":
+                    case "zebra":
+                        solution.Houses[value].Pet = c.Key.Name.ToString();
+                        break;
+                    case "english":
+                    case "japanese":
+                    case "norwegian":
+                    case "spanish":
+                    case "ukrainian":
+                        solution.Houses[value].Nationality = c.Key.Name.ToString();
+                        break;
+                    case "coffee":
+                    case "milk":
+                    case "orange_juice":
+                    case "tea":
+                    case "water":
+                        solution.Houses[value].Drinks = c.Key.Name.ToString();
+                        break;
+                    case "chesterfields":
+                    case "kools":
+                    case "luckystrikes":
+                    case "oldgolds":
+                    case "parliaments":
+                        solution.Houses[value].Smokes = c.Key.Name.ToString();
+                        break;
                 }
             }
             return solution;
