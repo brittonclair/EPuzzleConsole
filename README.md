@@ -9,8 +9,11 @@ Using constraint solvers to solve the Zebra Puzzle (sometimes called Einstein's 
 
 ## Requirements:
 * .Net 9
-* Google.OrTools .Net wrapper nuget package
-* Decider nuget package
-* Microsoft.Z3 for .Net nuget package
+* For the EPuzzleConsole project:
+  * Google.OrTools .Net wrapper nuget package
+  * Decider nuget package
+  * Microsoft.Z3 for .Net nuget package
+* For the EPuzzleConsoleTests project (to run tests):
+  * NUnit nuget package
 
  
