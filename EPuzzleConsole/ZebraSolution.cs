@@ -2,7 +2,7 @@
 
 namespace EPuzzleConsole
 {
-    internal class ZebraSolution
+    public class ZebraSolution
     {
         public Dictionary<int, House> Houses { get; private set; } = [];
         public ZebraSolution()
@@ -92,7 +92,7 @@ namespace EPuzzleConsole
         }
     }
 
-    internal class House
+    public class House
     {
         public int Id { get; private set; }
         public string Color { get; set; } = "";
@@ -110,6 +110,34 @@ namespace EPuzzleConsole
             Drinks = drinks;
             Smokes = smokes;
         }
+
+        public bool SetAttribute(string attribute, string value)
+        {
+            bool result = true;
+            switch (attribute.ToLower())
+            {
+                case "color":
+                    Color = value;
+                    break;
+                case "nationality":
+                    Nationality = value;
+                    break;
+                case "pet":
+                    Pet = value;
+                    break;
+                case "drinks":
+                    Drinks = value;
+                    break;
+                case "smokes":
+                    Smokes = value;
+                    break;
+                default:
+                    result = false;
+                    break;
+            }
+            return result;
+        }
+
 
         public override string ToString()
         {

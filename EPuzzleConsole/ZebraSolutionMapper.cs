@@ -7,153 +7,106 @@ namespace EPuzzleConsole
 {
     internal class ZebraSolutionMapper
     {
-        public static ZebraSolution ToSolutionFromDecider(IDictionary<string, IVariable<int>> solutionVariables)
+        ZebraSolution? solution;
+        public ZebraSolution ToSolutionFromDecider(IDictionary<string, IVariable<int>> solutionVariables)
         {
-            ZebraSolution solution = new();
+            solution = new();
             foreach (var solutionVariableEntry in solutionVariables)
             {
                 IVariable<int> solutionVar = solutionVariableEntry.Value;
-                int value = solutionVar.InstantiatedValue;
-                switch (solutionVar.Name)
-                {
-                    case "blue":
-                    case "green":
-                    case "ivory":
-                    case "red":
-                    case "yellow":
-                        solution.Houses[value].Color = solutionVar.Name;
-                        break;
-                    case "dog":
-                    case "fox":
-                    case "horse":
-                    case "snails":
-                    case "zebra":
-                        solution.Houses[value].Pet = solutionVar.Name;
-                        break;
-                    case "english":
-                    case "japanese":
-                    case "norwegian":
-                    case "spanish":
-                    case "ukrainian":
-                        solution.Houses[value].Nationality = solutionVar.Name;
-                        break;
-                    case "coffee":
-                    case "milk":
-                    case "orange_juice":
-                    case "tea":
-                    case "water":
-                        solution.Houses[value].Drinks = solutionVar.Name;
-                        break;
-                    case "chesterfields":
-                    case "kools":
-                    case "luckystrikes":
-                    case "oldgolds":
-                    case "parliaments":
-                        solution.Houses[value].Smokes = solutionVar.Name;
-                        break;
-                }
+                string attribute = DecideAttribute(solutionVar.Name);
+                string attributeValue = solutionVar.Name;
+                int houseNumber = solutionVar.InstantiatedValue;
+                SetAttributeValue(houseNumber, attribute, attributeValue);
             }
             return solution;
         }
-        public static ZebraSolution ToSolutionFromCpSolver(ImmutableArray<IntVar> variablesOfInterest, CpSolver solver)
+        public ZebraSolution ToSolutionFromCpSolver(ImmutableArray<IntVar> variablesOfInterest, CpSolver solver)
         {
-            ZebraSolution solution = new();
+            solution = new();
 
             foreach (IntVar modelIntVar in variablesOfInterest)
             {
-                int value = (int)solver.Value(modelIntVar);
-                switch(modelIntVar.Name())
-                {
-                    case "blue":
-                    case "green":
-                    case "ivory":
-                    case "red":
-                    case "yellow":
-                        solution.Houses[value].Color = modelIntVar.Name();
-                        break;
-                    case "dog":
-                    case "fox":
-                    case "horse":
-                    case "snails":
-                    case "zebra":
-                        solution.Houses[value].Pet = modelIntVar.Name();
-                        break;
-                    case "english":
-                    case "japanese":
-                    case "norwegian":
-                    case "spanish":
-                    case "ukrainian":
-                        solution.Houses[value].Nationality = modelIntVar.Name();
-                        break;
-                    case "coffee":
-                    case "milk":
-                    case "orange_juice":
-                    case "tea":
-                    case "water":
-                        solution.Houses[value].Drinks = modelIntVar.Name();
-                        break;
-                    case "chesterfields":
-                    case "kools":
-                    case "luckystrikes":
-                    case "parliaments":
-                    case "oldgolds":
-                        solution.Houses[value].Smokes = modelIntVar.Name();
-                        break;
-                    default:
-                        throw new ArgumentException($"Unexpected variable name: {modelIntVar.Name()}");
-                }
+                string attribute = DecideAttribute(modelIntVar.Name());
+                string attributeValue = modelIntVar.Name();
+                int houseNumber = (int)solver.Value(modelIntVar);
+                SetAttributeValue(houseNumber, attribute, attributeValue);
             }
             return solution;
         }
 
-        internal static ZebraSolution ToSolutionFromZ3(Solver s)
+        public ZebraSolution ToSolutionFromZ3(Solver s)
         {
-            ZebraSolution solution = new();
+            solution = new();
             IEnumerable<KeyValuePair<FuncDecl, Expr>> cs = s.Model.Consts;
             foreach (var c in cs)
             {
-                //Console.WriteLine($"{c.Key.Name} = {c.Value}");
-                int value = ((IntNum)c.Value).Int;
-                switch (c.Key.Name.ToString())
-                {
-                    case "blue":
-                    case "green":
-                    case "ivory":
-                    case "red":
-                    case "yellow":
-                        solution.Houses[value].Color = c.Key.Name.ToString();
-                        break;
-                    case "dog":
-                    case "fox":
-                    case "horse":
-                    case "snails":
-                    case "zebra":
-                        solution.Houses[value].Pet = c.Key.Name.ToString();
-                        break;
-                    case "english":
-                    case "japanese":
-                    case "norwegian":
-                    case "spanish":
-                    case "ukrainian":
-                        solution.Houses[value].Nationality = c.Key.Name.ToString();
-                        break;
-                    case "coffee":
-                    case "milk":
-                    case "orange_juice":
-                    case "tea":
-                    case "water":
-                        solution.Houses[value].Drinks = c.Key.Name.ToString();
-                        break;
-                    case "chesterfields":
-                    case "kools":
-                    case "luckystrikes":
-                    case "oldgolds":
-                    case "parliaments":
-                        solution.Houses[value].Smokes = c.Key.Name.ToString();
-                        break;
-                }
+                string attribute = DecideAttribute(c.Key.Name.ToString());
+                string attributeValue = c.Key.Name.ToString();
+                int houseNumber = ((IntNum)c.Value).Int;
+                SetAttributeValue(houseNumber, attribute, attributeValue);
             }
             return solution;
+        }
+
+        private void SetAttributeValue(int houseNumber, string attribute, string attributeValue)
+        {
+            House? house = solution?.Houses[houseNumber];
+            if (house == null)
+            {
+                throw new ArgumentException($"House with index {houseNumber} does not exist.");
+            }
+            bool attributeWasSet = house.SetAttribute(attribute, attributeValue);
+            if (!attributeWasSet)
+            {
+                throw new ArgumentException($"Failed to set attribute {attribute} with value {attributeValue} for house index {houseNumber}.");
+            }
+        }
+
+        private static string DecideAttribute(string modelVariableName)
+        {
+            string attribute = string.Empty;
+            switch (modelVariableName)
+            {
+                case "blue":
+                case "green":
+                case "ivory":
+                case "red":
+                case "yellow":
+                    attribute = "Color";
+                    break;
+                case "dog":
+                case "fox":
+                case "horse":
+                case "snails":
+                case "zebra":
+                    attribute = "Pet";
+                    break;
+                case "english":
+                case "japanese":
+                case "norwegian":
+                case "spanish":
+                case "ukrainian":
+                    attribute = "Nationality";
+                    break;
+                case "coffee":
+                case "milk":
+                case "orange_juice":
+                case "tea":
+                case "water":
+                    attribute = "Drinks";
+                    break;
+                case "chesterfields":
+                case "kools":
+                case "luckystrikes":
+                case "oldgolds":
+                case "parliaments":
+                    attribute = "Smokes";
+                    break;
+                default:
+                    throw new ArgumentException($"Unexpected variable name: {modelVariableName}");
+            }
+            return attribute;
         }
     }
 }

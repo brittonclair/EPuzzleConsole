@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36408.4 d17.14
+VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPuzzleConsole", "EPuzzleConsole\EPuzzleConsole.csproj", "{A2EEF03F-8C30-4A88-8866-D9BE906E3B69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPuzzleConsoleTests", "EPuzzleConsoleTests\EPuzzleConsoleTests.csproj", "{BDD3FD5B-F281-4746-97AA-0C02FF72C302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A2EEF03F-8C30-4A88-8866-D9BE906E3B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2EEF03F-8C30-4A88-8866-D9BE906E3B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2EEF03F-8C30-4A88-8866-D9BE906E3B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDD3FD5B-F281-4746-97AA-0C02FF72C302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDD3FD5B-F281-4746-97AA-0C02FF72C302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDD3FD5B-F281-4746-97AA-0C02FF72C302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDD3FD5B-F281-4746-97AA-0C02FF72C302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
