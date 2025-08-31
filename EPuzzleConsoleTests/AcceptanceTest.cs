@@ -32,7 +32,7 @@ namespace EPuzzleConsoleTests
                 Assert.That(solution.Houses[key].Id, Is.EqualTo(key));
                 VerifyHouseAttributes(solution.Houses[key]);
             }
-
+            Console.WriteLine("CpSolver solution verified.");
 
             solution = zebra.SolveUsingDecider();
 
@@ -52,6 +52,7 @@ namespace EPuzzleConsoleTests
                 Assert.That(solution.Houses[key].Id, Is.EqualTo(key));
                 VerifyHouseAttributes(solution.Houses[key]);
             }
+            Console.WriteLine("Decider solution verified.");
 
 
             solution = zebra.SolveUsingZ3();
@@ -71,6 +72,7 @@ namespace EPuzzleConsoleTests
                 Assert.That(solution.Houses[key].Id, Is.EqualTo(key));
                 VerifyHouseAttributes(solution.Houses[key]);
             }
+            Console.WriteLine("Z3 solution verified.");
         }
 
         private void VerifyHouseAttributes(House house)
