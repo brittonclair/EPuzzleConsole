@@ -1,57 +1,32 @@
-﻿using Decider.Csp.BaseTypes;
-using Google.OrTools.Sat;
-using Microsoft.Z3;
-using System.Collections.Immutable;
+﻿using EPuzzleConsole.Adapters;
 
 namespace EPuzzleConsole
 {
     internal class ZebraSolutionMapper
     {
-        ZebraSolution? solution;
-        public ZebraSolution ToSolutionFromDecider(IDictionary<string, IVariable<int>> solutionVariables)
-        {
-            solution = new();
-            foreach (var solutionVariableEntry in solutionVariables)
-            {
-                IVariable<int> solutionVar = solutionVariableEntry.Value;
-                string attribute = DecideAttribute(solutionVar.Name);
-                string attributeValue = solutionVar.Name;
-                int houseNumber = solutionVar.InstantiatedValue;
-                SetAttributeValue(houseNumber, attribute, attributeValue);
-            }
-            return solution;
-        }
-        public ZebraSolution ToSolutionFromCpSolver(ImmutableArray<IntVar> variablesOfInterest, CpSolver solver)
-        {
-            solution = new();
+        ZebraSolution? zebraSolution;
+        /* 
+         * Map from a generic SolverSolution (a collection of 
+         * variable-value pairs extracted from a specific solver)
+         * to a specific problem solution (a ZebraSolution).
+         */
 
-            foreach (IntVar modelIntVar in variablesOfInterest)
-            {
-                string attribute = DecideAttribute(modelIntVar.Name());
-                string attributeValue = modelIntVar.Name();
-                int houseNumber = (int)solver.Value(modelIntVar);
-                SetAttributeValue(houseNumber, attribute, attributeValue);
-            }
-            return solution;
-        }
-
-        public ZebraSolution ToSolutionFromZ3(Solver s)
+        public ZebraSolution FromSolverSolution(SolverSolution solverSolution)
         {
-            solution = new();
-            IEnumerable<KeyValuePair<FuncDecl, Expr>> cs = s.Model.Consts;
-            foreach (var c in cs)
+            zebraSolution = new(solverSolution.SolverLabel);
+            foreach (var solutionVariableEntry in solverSolution.SolutionValues)
             {
-                string attribute = DecideAttribute(c.Key.Name.ToString());
-                string attributeValue = c.Key.Name.ToString();
-                int houseNumber = ((IntNum)c.Value).Int;
+                string attribute = DecideAttribute(solutionVariableEntry.Key);
+                string attributeValue = solutionVariableEntry.Key;
+                int houseNumber = solutionVariableEntry.Value;
                 SetAttributeValue(houseNumber, attribute, attributeValue);
             }
-            return solution;
+            return zebraSolution;
         }
 
         private void SetAttributeValue(int houseNumber, string attribute, string attributeValue)
         {
-            House? house = solution?.Houses[houseNumber];
+            House? house = zebraSolution?.Houses[houseNumber];
             if (house == null)
             {
                 throw new ArgumentException($"House with index {houseNumber} does not exist.");

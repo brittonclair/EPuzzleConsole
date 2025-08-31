@@ -4,9 +4,12 @@ namespace EPuzzleConsole
 {
     public class ZebraSolution
     {
+        public string SolverLabel { get; set; }
+
         public Dictionary<int, House> Houses { get; private set; } = [];
-        public ZebraSolution()
+        public ZebraSolution(string solverLabel)
         {
+            SolverLabel = solverLabel;
             for (int i = 1; i <= 5; i++)
             {
                 Houses[i] = new House(i);

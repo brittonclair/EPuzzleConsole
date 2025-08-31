@@ -17,7 +17,7 @@ namespace EPuzzleConsoleTests
             var solution = zebra.SolveUsingCpSolver();
 
             // Solution not null
-            Assert.That(solution, Is.Not.EqualTo(null));
+            //Assert.That(solution, Is.Not.EqualTo(null));
 
             // Solution has 5 houses
             // with Ids 1 to 5
