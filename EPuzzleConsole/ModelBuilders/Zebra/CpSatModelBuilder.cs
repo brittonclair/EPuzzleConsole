@@ -1,9 +1,9 @@
 ﻿using Google.OrTools.Sat;
 using System.Collections.Immutable;
 
-namespace EPuzzleConsole
+namespace EPuzzleConsole.ModelBuilders.Zebra
 {
-    internal class ZebraModelBuilder_CpModel
+    internal class CpSatModelBuilder
     {
         public static (CpModel model, ImmutableArray<IntVar> variablesOfInterest) BuildModel()
         {

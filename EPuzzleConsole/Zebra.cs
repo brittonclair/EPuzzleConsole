@@ -1,5 +1,6 @@
-﻿using Decider.Csp.Integer;
-using EPuzzleConsole.Adapters;
+﻿using EPuzzleConsole.Adapters;
+using EPuzzleConsole.ModelBuilders.Zebra;
+using EPuzzleConsole.SolutionAdapters;
 using Google.OrTools.Sat;
 using Microsoft.Z3;
 using System.Collections.Immutable;
@@ -21,9 +22,6 @@ namespace EPuzzleConsole
             result = SolveUsingCpSolver();
             if (result != null) PresentSolution(result);
 
-            result = SolveUsingDecider();
-            if(result != null) PresentSolution(result);
-
             result =SolveUsingZ3();
             if(result != null) PresentSolution(result);
         }
@@ -31,7 +29,7 @@ namespace EPuzzleConsole
         {
             ZebraSolution? zebraSolution = null;
 
-            (CpModel model, ImmutableArray<Google.OrTools.Sat.IntVar> variablesOfInterest) = ZebraModelBuilder_CpModel.BuildModel();
+            (CpModel model, ImmutableArray<Google.OrTools.Sat.IntVar> variablesOfInterest) = CpSatModelBuilder.BuildModel();
             
             CpSolver solver = new();
             var status = solver.Solve(model);
@@ -44,36 +42,12 @@ namespace EPuzzleConsole
              */
             if (status == CpSolverStatus.Optimal || status == CpSolverStatus.Feasible)
             {
-                SolverSolution solverSolution = CpSatAdapter.ExtractSolution(variablesOfInterest, solver);
+                SolverSolution solverSolution = SolutionAdapter_CpSat.ExtractSolution(variablesOfInterest, solver);
                 zebraSolution = zebraSolutionMapper.FromSolverSolution(solverSolution);
             }
             else
             {
                 Console.WriteLine("No solution found.");
-            }
-            return zebraSolution;
-        }
-
-        public ZebraSolution? SolveUsingDecider()
-        {
-            ZebraSolution? zebraSolution = null;
-
-            StateInteger state = ZebraModelBuilder_Decider.BuildModel();
-            var searchResult = state.SearchAllSolutions();
-
-            /* Decider returns a list of solutions, which
-             * may be empty if no solution found. 
-             */
-            if(state.Solutions.Count == 0)
-            {
-                Console.WriteLine("No solution found.");
-            }
-            else
-            {
-                // Use the first solution that was found
-                SolverSolution solverSolution = DeciderAdapter.ExtractSolution(state.Solutions[0]);
-                zebraSolution = zebraSolutionMapper.FromSolverSolution(solverSolution);
-
             }
             return zebraSolution;
         }
@@ -82,7 +56,7 @@ namespace EPuzzleConsole
         {
             ZebraSolution? zebraSolution = null;
 
-            Microsoft.Z3.Solver z3Solver = ZebraModelBuilder_Z3.BuildModel();
+            Microsoft.Z3.Solver z3Solver = Z3ModelBuilder.BuildModel();
             var z3Result = z3Solver.Check();
             /* Z3 status can be one of these:
              *   SATISFIABLE, UNSATISFIABLE, UNKNOWN
@@ -90,7 +64,7 @@ namespace EPuzzleConsole
              */
             if (z3Result == Status.SATISFIABLE)
             {
-                SolverSolution solverSolution = Z3Adapter.ExtractSolution(z3Solver);
+                SolverSolution solverSolution = SolutionAdapter_Z3.ExtractSolution(z3Solver);
                 zebraSolution = zebraSolutionMapper.FromSolverSolution(solverSolution);
             }
             else

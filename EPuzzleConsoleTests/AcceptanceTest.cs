@@ -34,25 +34,6 @@ namespace EPuzzleConsoleTests
             }
             Console.WriteLine("CpSolver solution verified.");
 
-            solution = zebra.SolveUsingDecider();
-
-            // Solution not null
-            Assert.That(solution, Is.Not.EqualTo(null));
-
-            // Solution has 5 houses
-            // with Ids 1 to 5
-            // and keys match House Id's
-            Assert.That(solution.Houses.Count, Is.EqualTo(5));
-            for (int idx = 1; idx <= 5; idx++)
-            {
-                Assert.That(solution.Houses.ContainsKey(idx), Is.True);
-            }
-            foreach (int key in solution.Houses.Keys)
-            {
-                Assert.That(solution.Houses[key].Id, Is.EqualTo(key));
-                VerifyHouseAttributes(solution.Houses[key]);
-            }
-            Console.WriteLine("Decider solution verified.");
 
 
             solution = zebra.SolveUsingZ3();

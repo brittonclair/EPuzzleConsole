@@ -1,9 +1,9 @@
 ﻿using Microsoft.Z3;
 using System.Collections.Immutable;
 
-namespace EPuzzleConsole
+namespace EPuzzleConsole.ModelBuilders.Zebra
 {
-    internal class ZebraModelBuilder_Z3
+    internal class Z3ModelBuilder
     {
         public static Solver BuildModel()
         {
