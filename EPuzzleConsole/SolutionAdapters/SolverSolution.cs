@@ -9,9 +9,9 @@
          * that produced the solution.
          */
         internal readonly Dictionary<string, int> SolutionValues = [];
-        public string SolverLabel { get; init; }
+        internal string SolverLabel { get; init; }
 
-        public SolverSolution(string solverLabel)
+        internal SolverSolution(string solverLabel)
         {
             SolverLabel = solverLabel;
         }

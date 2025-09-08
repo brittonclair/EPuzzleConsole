@@ -11,7 +11,7 @@ namespace EPuzzleConsole
          * to a specific problem solution (a ZebraSolution).
          */
 
-        public ZebraSolution FromSolverSolution(SolverSolution solverSolution)
+        internal ZebraSolution FromSolverSolution(SolverSolution solverSolution)
         {
             zebraSolution = new(solverSolution.SolverLabel);
             foreach (var solutionVariableEntry in solverSolution.SolutionValues)

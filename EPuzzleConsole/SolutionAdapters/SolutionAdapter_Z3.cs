@@ -5,7 +5,7 @@ namespace EPuzzleConsole.SolutionAdapters
 {
     internal class SolutionAdapter_Z3
     {
-        public static SolverSolution ExtractSolution(Solver s)
+        internal static SolverSolution ExtractSolution(Solver s)
         {
             SolverSolution solution = new(solverLabel: "Z3");
             IEnumerable<KeyValuePair<FuncDecl, Expr>> cs = s.Model.Consts;

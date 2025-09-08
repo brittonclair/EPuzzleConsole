@@ -5,7 +5,7 @@ namespace EPuzzleConsole.ModelBuilders.Zebra
 {
     internal class Z3ModelBuilder
     {
-        public static Solver BuildModel()
+        internal static Solver BuildModel()
         {
             /* We will have the solver assign an integer as
              * the 'house number' (1 to 5) to the attributes

@@ -7,16 +7,16 @@ using System.Collections.Immutable;
 
 namespace EPuzzleConsole
 {
-    public class Zebra
+    internal class Zebra
     {
         private readonly ZebraSolutionMapper zebraSolutionMapper;
 
-        public Zebra()
+        internal Zebra()
         {
             zebraSolutionMapper = new ZebraSolutionMapper();
         }
 
-        public void Solve()
+        internal void Solve()
         {
             ZebraSolution? result;
             result = SolveUsingCpSolver();
@@ -25,7 +25,7 @@ namespace EPuzzleConsole
             result =SolveUsingZ3();
             if(result != null) PresentSolution(result);
         }
-        public ZebraSolution? SolveUsingCpSolver()
+        internal ZebraSolution? SolveUsingCpSolver()
         {
             ZebraSolution? zebraSolution = null;
 
@@ -52,7 +52,7 @@ namespace EPuzzleConsole
             return zebraSolution;
         }
 
-        public ZebraSolution? SolveUsingZ3()
+        internal ZebraSolution? SolveUsingZ3()
         {
             ZebraSolution? zebraSolution = null;
 

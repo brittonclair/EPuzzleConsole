@@ -2,12 +2,12 @@
 
 namespace EPuzzleConsole
 {
-    public class ZebraSolution
+    internal class ZebraSolution
     {
-        public string SolverLabel { get; set; }
+        internal string SolverLabel { get; set; }
 
-        public Dictionary<int, House> Houses { get; private set; } = [];
-        public ZebraSolution(string solverLabel)
+        internal Dictionary<int, House> Houses { get; private set; } = [];
+        internal ZebraSolution(string solverLabel)
         {
             SolverLabel = solverLabel;
             for (int i = 1; i <= 5; i++)
@@ -16,7 +16,7 @@ namespace EPuzzleConsole
             }
         }
 
-        public House? GetHouseByAttribute(string attribute, string value)
+        internal House? GetHouseByAttribute(string attribute, string value)
         {
             switch (attribute.ToLower())
             {
@@ -71,7 +71,7 @@ namespace EPuzzleConsole
             return null;
         }
 
-        public void Print(string heading = "")
+        internal void Print(string heading = "")
         {
             Console.WriteLine();
             Console.WriteLine(new string('-', 40));
@@ -95,16 +95,16 @@ namespace EPuzzleConsole
         }
     }
 
-    public class House
+    internal class House
     {
-        public int Id { get; private set; }
-        public string Color { get; set; } = "";
-        public string Nationality { get; set; } = "";
-        public string Pet { get; set; } = "";
-        public string Drinks { get; set; } = "";
-        public string Smokes { get; set; } = "";
+        internal int Id { get; private set; }
+        internal string Color { get; set; } = "";
+        internal string Nationality { get; set; } = "";
+        internal string Pet { get; set; } = "";
+        internal string Drinks { get; set; } = "";
+        internal string Smokes { get; set; } = "";
 
-        public House(int id, string color="", string nationality = "", string pet = "", string drinks = "", string smokes = "")
+        internal House(int id, string color="", string nationality = "", string pet = "", string drinks = "", string smokes = "")
         {
             Id = id;
             Color = color;
@@ -114,7 +114,7 @@ namespace EPuzzleConsole
             Smokes = smokes;
         }
 
-        public bool SetAttribute(string attribute, string value)
+        internal bool SetAttribute(string attribute, string value)
         {
             bool result = true;
             switch (attribute.ToLower())

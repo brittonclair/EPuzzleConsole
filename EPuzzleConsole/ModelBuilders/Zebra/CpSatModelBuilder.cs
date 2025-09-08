@@ -5,7 +5,7 @@ namespace EPuzzleConsole.ModelBuilders.Zebra
 {
     internal class CpSatModelBuilder
     {
-        public static (CpModel model, ImmutableArray<IntVar> variablesOfInterest) BuildModel()
+        internal static (CpModel model, ImmutableArray<IntVar> variablesOfInterest) BuildModel()
         {
             int numberOfHouses = 5;
 

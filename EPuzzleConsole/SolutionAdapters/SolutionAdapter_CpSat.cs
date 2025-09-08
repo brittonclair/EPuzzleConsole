@@ -6,7 +6,7 @@ namespace EPuzzleConsole.SolutionAdapters
 {
     internal class SolutionAdapter_CpSat
     {
-        public static SolverSolution ExtractSolution(ImmutableArray<IntVar> variablesOfInterest, CpSolver solver)
+        internal static SolverSolution ExtractSolution(ImmutableArray<IntVar> variablesOfInterest, CpSolver solver)
         {
             SolverSolution solution = new(solverLabel: "CpSat");
             foreach (IntVar modelIntVar in variablesOfInterest)
